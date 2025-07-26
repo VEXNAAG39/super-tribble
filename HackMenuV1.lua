@@ -1,43 +1,47 @@
 --[[
-    Basic GUI Script for Roblox (Rayfield)
+    GUI Básica para Roblox (Rayfield) - Versão Corrigida
     Feito por VEXNAAG39
-    Carregue com: loadstring(game:HttpGet("https://raw.githubusercontent.com/VEXNAAG39/super-tribble/main/HackMenuV1.lua"))()
-    Apenas GUI, sem funções extras.
-    Inclui efeito de abertura bonito e leve.
-    Compatível com a maioria dos executores.
+    Carregue com: loadstring(game:HttpGet("LINK_DO_RAW_AQUI"))()
 ]]
 
-if not game:IsLoaded() then game.Loaded:Wait() end
+-- Espera o jogo carregar
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 
--- Corrige para evitar problemas de duplicidade no CoreGui
-local CG = game:GetService("CoreGui")
-local rayfield = CG:FindFirstChild("Rayfield")
-if rayfield then rayfield:Destroy() end
-
--- Carrega Rayfield GUI
+-- Carrega a biblioteca Rayfield
+local Rayfield = nil
 local success, err = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Rayfield/main/source.lua", true))()
+    Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
 end)
+
 if not success then
-    warn("Erro ao carregar Rayfield:", err)
+    warn("Falha ao carregar Rayfield: "..tostring(err))
     return
 end
 
-repeat task.wait() until CG:FindFirstChild("Rayfield")
-local Rayfield = require(CG:FindFirstChild("Rayfield"))
-
+-- Cria a janela principal
 local Window = Rayfield:CreateWindow({
     Name = "Basic GUI",
     LoadingTitle = "Carregando interface...",
     LoadingSubtitle = "Bem-vindo!",
-    ConfigurationSaving = {Enabled = false},
-    Discord = {Enabled = false},
+    ConfigurationSaving = {
+        Enabled = false,
+        FolderName = nil,
+        FileName = "Configurações da GUI"
+    },
+    Discord = {
+        Enabled = false,
+        Invite = "semconvite",
+        RememberJoins = true
+    },
     KeySystem = false,
-    Icon = "rbxassetid://14528995720"
 })
 
-local MainTab = Window:CreateTab("Principal", 14528995720)
+-- Cria a aba principal
+local MainTab = Window:CreateTab("Principal", 14528995720) -- Ícone opcional
 
+-- Adiciona elementos
 MainTab:CreateLabel("Exemplo de GUI básica.")
 
 MainTab:CreateButton({
@@ -46,10 +50,20 @@ MainTab:CreateButton({
         Rayfield:Notify({
             Title = "Sucesso!",
             Content = "Você clicou no botão!",
-            Duration = 2,
-            Image = "rbxassetid://14528995720"
+            Duration = 6.5,
+            Image = 14528995720,
+            Actions = {
+                Ignore = {
+                    Name = "Ok",
+                    Callback = function()
+                        print("Usuário clicou em Ok")
+                    end
+                },
+            },
         })
     end,
 })
 
 MainTab:CreateLabel("Interface leve e rápida.")
+
+print("GUI carregada com sucesso!")
