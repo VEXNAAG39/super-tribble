@@ -1,2 +1,2 @@
-# super-tribble
+# VexHub
 Script para roblox e ferramentas
